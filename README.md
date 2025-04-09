@@ -1,3 +1,4 @@
+# This part is entirely done by me
 ##  Code Summarizer - Overview
 
 ###  Features
