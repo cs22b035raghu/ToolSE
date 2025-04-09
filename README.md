@@ -8,7 +8,7 @@ Python 3.10 or later
 
 Git
 
-Pip (Python package manager)
+Pip (Python package manager) 
 
 Installation Instructions
 
@@ -26,7 +26,7 @@ Upgrade and reinstall numpy to fix import issues:
 
 4. Running the Script
 
-To extract keywords, run:
+To extract keywords,summary of the pdf run:
 
 5. Pushing Changes to GitHub
 
