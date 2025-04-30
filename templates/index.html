@@ -1,308 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Module Analyzer with Chat</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f7f9fc;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Module Analyzer with Chat</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f5f9;
+    }
 
-        .container {
-            width: 85%;
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      max-width: 960px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
 
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-            font-size: 2.4rem;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
 
-        /* Box container styling for different sections */
-        .box {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            overflow: hidden; /* Prevents overflow */
-        }
+    h2 {
+      color: #2d3436;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
 
-        label {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            display: block;
-            color: #333;
-        }
+    .box {
+      margin-bottom: 25px;
+      padding: 20px;
+      background-color: #fdfdfd;
+      border-radius: 10px;
+      border: 1px solid #e2e6ea;
+      overflow-x: auto;
+      word-wrap: break-word;
+    }
 
-        input[type="text"],
-        input[type="file"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            margin: 12px 0 22px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box; /* Ensures inputs don't overflow */
-        }
+    .box label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
 
-        input[type="text"]:focus,
-        input[type="file"]:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
+    .box input[type="text"],
+    .box input[type="file"],
+    .box input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 16px;
+    }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 14px;
-        }
+    .box input[type="submit"] {
+      background-color: #28a745;
+      color: #fff;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+    .box input[type="submit"]:hover {
+      background-color: #218838;
+    }
 
-        .result-section {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 6px solid #4CAF50;
-        }
+    .result-section {
+      background-color: #f8fafc;
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      border-radius: 8px;
+    }
 
-        .result-section h2 {
-            margin-top: 0;
-            color: #333;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-x: auto;
+      max-height: 400px;
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+    }
 
-        .chat-container {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f1f5f9;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            max-height: 400px; /* Ensures chat box doesn't overflow */
-            overflow-y: auto; /* Allows scrolling if content overflows */
-        }
+    .download-btn {
+      background-color: #007bff;
+      padding: 10px 16px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
 
-        .chat-box {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            background-color: #ffffff;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            line-height: 1.6;
-            overflow-wrap: break-word; /* Prevents words from overflowing */
-        }
+    .download-btn:hover {
+      background-color: #0056b3;
+    }
 
-        .chat-input {
-            width: calc(100% - 90px);
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-        }
+    .chat-container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
 
-        .chat-submit {
-            width: 80px;
-            padding: 14px;
-            background-color: #4CAF50;
-            color: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
+    .chat-box {
+      height: 250px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #e0e0e0;
+      word-wrap: break-word;
+    }
 
-        .chat-submit:hover {
-            background-color: #45a049;
-        }
+    .chat-box div {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+    }
 
-        .footer {
-            text-align: center;
-            font-size: 1rem;
-            color: #777;
-            margin-top: 40px;
-        }
+    .chat-box div:nth-child(odd) {
+      background-color: #e3f2fd;
+      align-self: flex-start;
+    }
 
-        .footer a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
+    .chat-box div:nth-child(even) {
+      background-color: #d4edda;
+      text-align: right;
+      align-self: flex-end;
+    }
 
-        .footer a:hover {
-            text-decoration: underline;
-        }
+    .chat-input {
+      width: 80%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
 
-        /* Better contrast for the chat box messages */
-        .chat-box div {
-            margin-bottom: 12px;
-        }
+    .chat-submit {
+      width: 18%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 2%;
+      transition: background-color 0.3s ease;
+    }
 
-        .chat-box b {
-            color: #4CAF50;
-        }
+    .chat-submit:hover {
+      background-color: #0056b3;
+    }
 
-    </style>
+    button.generate-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: #dc3545;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button.generate-btn:hover {
+      background-color: #c82333;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      .chat-input,
+      .chat-submit {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .chat-submit {
+        margin-left: 0;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Requirement Code Traceability</h1>
 
-<div class="container">
-    <h1>Module Code Analyzer</h1>
-
-    <!-- Form Section in a Box -->
     <div class="box">
-        <form method="POST" enctype="multipart/form-data">
-            <label for="repo_url">GitHub Repo URL:</label>
-            <input type="text" id="repo_url" name="repo_url" required placeholder="Enter GitHub repository URL">
+      <form method="POST" action="/" enctype="multipart/form-data">
+        <label for="repo_url">GitHub Repo URL:</label>
+        <input type="text" id="repo_url" name="repo_url" required placeholder="Enter GitHub repository URL" />
 
-            <label for="module_name">Module Name:</label>
-            <input type="text" id="module_name" name="module_name" required placeholder="Enter the module name">
+        <label for="module_name">Module Name:</label>
+        <input type="text" id="module_name" name="module_name" />
 
-            <label for="pdf_file">Upload PDF for Similarity Check (optional):</label>
-            <input type="file" id="pdf_file" name="pdf_file">
+        <label for="pdf_file">Upload PDF for Similarity Check (optional):</label>
+        <input type="file" id="pdf_file" name="pdf_file" />
 
-            <input type="submit" value="Analyze">
-        </form>
+        <input type="submit" value="Analyze" />
+      </form>
     </div>
 
-    <!-- Results Section (if exists) -->
     {% if report_content %}
-        <div class="box result-section">
-            <h2>📄 Report</h2>
-            <pre>{{ report_content }}</pre>
-            <a href="/download_report" class="download-btn">Download Report</a>
-        </div>
+    <div class="box result-section">
+      <h2>📄 Report</h2>
+      <pre>{{ report_content | safe }}</pre>
+      <a href="{{ url_for('download_report') }}" class="download-btn">Download Report</a>
+    </div>
     {% endif %}
 
     {% if ai_summary %}
-        <div class="box result-section">
-            <h2>🧠 AI Summary</h2>
-            <p>{{ ai_summary }}</p>
-        </div>
+    <div class="box result-section">
+      <h2>🧠 AI Summary</h2>
+      <p>{{ ai_summary | safe }}</p>
+    </div>
     {% endif %}
 
     {% if ai_suggestions %}
-        <div class="box result-section">
-            <h2>💡 AI Suggestions</h2>
-            <p>{{ ai_suggestions }}</p>
-        </div>
+    <div class="box result-section">
+      <h2>💡 AI Suggestions</h2>
+      {% set lines = ai_suggestions.split('\n') %}
+      <ul>
+        {% for line in lines %}
+          {% if line.strip() %}
+            <li>{{ line.strip() }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
     {% endif %}
 
     {% if similarity_score %}
-        <div class="box result-section">
-            <h2>📊 Similarity Score</h2>
-            <p>{{ similarity_score }}</p>
-        </div>
+    <div class="box result-section">
+      <h2>📊 Similarity Score</h2>
+      <p>{{ similarity_score | safe }}</p>
+    </div>
     {% endif %}
 
-    <!-- Chat Section in a Box -->
+    {% if implemented %}
+    <div class="box result-section">
+      <h2>✅ Implemented Modules</h2>
+      <ul>
+        {% for subheading in implemented %}
+        <li>{{ subheading }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if not_implemented %}
+    <div class="box result-section">
+      <h2>❌ Not Implemented Modules</h2>
+      <ul>
+        {% for subheading in not_implemented %}
+        <li>{{ subheading }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
     <div class="box chat-container">
-        <div class="chat-box" id="chatBox">
-            <!-- Chat messages will be shown here -->
-        </div>
-        <input type="text" id="chatInput" class="chat-input" placeholder="Type your message...">
-        <button id="chatSubmit" class="chat-submit">Send</button>
+      <div class="chat-box" id="chatBox"></div>
+      <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." />
+      <button id="chatSubmit" class="chat-submit">Send</button>
     </div>
+
     <div class="box">
-        <button onclick="generateIssues()" style="width: 100%; padding: 15px; background-color: #f44336; color: white; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">
-            🔍 Generate Code Issues
-        </button>
+      <button onclick="generateIssues()" class="generate-btn">
+        🔍 Generate Code Issues
+      </button>
     </div>
-    
+
     <div class="box result-section" id="issuesBox" style="display: none;">
-        <h2>🚨 Code Issues</h2>
-        <pre id="issuesContent">Generating...</pre>
+      <h2>🚨 Code Issues</h2>
+      <pre id="issuesContent">Generating...</pre>
     </div>
-    
-</div>
+  </div>
 
-<div class="footer">
+  <div class="footer">
     <p>Powered by Flask & AI | 2025 | <a href="https://github.com" target="_blank">GitHub</a></p>
-</div>
+  </div>
 
-<script>
-    // Handle chat functionality
-    document.getElementById("chatSubmit").addEventListener("click", function() {
-        const chatInput = document.getElementById("chatInput");
-        const message = chatInput.value.trim();
-        if (message) {
-            const chatBox = document.getElementById("chatBox");
-            chatBox.innerHTML += `<div><b>You:</b> ${message}</div>`;
-            chatInput.value = '';
+  <script>
+    document.getElementById("chatSubmit").addEventListener("click", function () {
+      const chatInput = document.getElementById("chatInput");
+      const message = chatInput.value.trim();
+      const chatBox = document.getElementById("chatBox");
 
-            // Send message to Flask route for AI response
-            fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ user_message: message }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const aiMessage = data.response || "Sorry, I didn't understand that.";
-                chatBox.innerHTML += `<div><b>AI:</b> ${aiMessage}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll to the bottom
-            });
-        }
+      if (message) {
+        chatBox.innerHTML += `<div><b>You:</b> ${message}</div>`;
+        chatInput.value = '';
+
+        fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_message: message }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const aiMessage = data.response || "⚠️ AI could not respond.";
+            chatBox.innerHTML += `<div><b>AI:</b> ${aiMessage}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+          })
+          .catch((error) => {
+            chatBox.innerHTML += `<div><b>AI:</b> ⚠️ Error: ${error.message}</div>`;
+          });
+      }
     });
+
     function generateIssues() {
-    const repoUrl = document.getElementById("repo_url").value.trim();
-    if (!repoUrl) {
-        alert("Please enter a GitHub repository URL.");
+      const repoUrl = document.getElementById("repo_url").value.trim();
+      const issuesBox = document.getElementById("issuesBox");
+      const issuesContent = document.getElementById("issuesContent");
+
+      if (!repoUrl) {
+        alert("⚠️ Please enter a GitHub repository URL.");
         return;
-    }
+      }
 
-    const issuesBox = document.getElementById("issuesBox");
-    const issuesContent = document.getElementById("issuesContent");
+      issuesBox.style.display = "block";
+      issuesContent.innerText = "Analyzing code for issues...";
 
-    issuesBox.style.display = "block";
-    issuesContent.innerText = "Analyzing code for issues...";
-
-    fetch("/generate_issues", {
+      fetch("/generate_issues", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ repo_url: repoUrl }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        issuesContent.innerText = data.issues || "No issues found or failed to analyze.";
-    })
-    .catch(err => {
-        issuesContent.innerText = "Error analyzing issues: " + err;
-    });
-}
-
-</script>
-
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          issuesContent.innerText = data.issues || "⚠️ No issues found or analysis failed.";
+        })
+        .catch((err) => {
+          issuesContent.innerText = "⚠️ Error analyzing issues: " + err.message;
+        });
+    }
+  </script>
 </body>
 </html>
