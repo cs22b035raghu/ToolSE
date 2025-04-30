@@ -44,3 +44,5 @@ If you encounter a numpy.core.multiarray failed to import error, reinstall numpy
 
 If transformers is outdated, upgrade it:
 
+-----> Tool demo video and Post Release1 work and advancements are also uploaded in Github repo itself
+
